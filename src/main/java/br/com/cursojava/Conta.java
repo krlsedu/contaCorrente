@@ -7,6 +7,7 @@ public class Conta {
     private Integer agencia;
     private Integer numero;
     private Double saldo;
+    private Double limiteChequeEspecial;
     private List<Movimento> movimentos;
 
     public Conta(){
@@ -36,6 +37,14 @@ public class Conta {
 
     public void setSaldo(Double saldo) {
         this.saldo = saldo;
+    }
+
+    public Double getLimiteChequeEspecial() {
+        return limiteChequeEspecial;
+    }
+
+    public void setLimiteChequeEspecial(Double limiteChequeEspecial) {
+        this.limiteChequeEspecial = limiteChequeEspecial;
     }
 
     public List<Movimento> getMovimentos() {

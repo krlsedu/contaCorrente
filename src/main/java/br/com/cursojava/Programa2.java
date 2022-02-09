@@ -9,6 +9,7 @@ public class Programa2 {
         Conta conta = new Conta();
         conta.setAgencia(12);
         conta.setNumero(123456);
+        conta.setLimiteChequeEspecial(200d);
 
         Correntista correntista = new Correntista();
         correntista.setConta(conta);
@@ -20,6 +21,8 @@ public class Programa2 {
     private static void leMovimentos(Correntista correntista) {
 
         String operacao;
+
+        ControleTransacao controleTransacao = new ControleTransacao(correntista.getConta());
 
         do {
             try {
@@ -58,21 +61,23 @@ public class Programa2 {
                 String descricao = scanner.nextLine();
                 movimento.setDescricao(descricao);
 
-                Conta conta = correntista.getConta();
-                List<Movimento> movimentos = conta.getMovimentos();
-                movimentos.add(movimento);
+                controleTransacao.validaTransacao(movimento);
+
+                controleTransacao.movimenta(movimento);
+
             } catch (InputMismatchException e) {
                 operacao = "";
                 System.out.println("O valor informado é inválido! " + e.getMessage());
 
             } catch (Exception e) {
                 operacao = "";
-                System.out.println("Houve um erro ao processar sua solicitação!");
+                System.out.println("Houve um erro ao processar sua solicitação! \n" + e.getMessage());
             }
 
         } while (!operacao.equalsIgnoreCase("s"));
         System.out.println("Saiu");
     }
+
 
     private static void imprime(Conta conta) {
         List<Movimento> movimentos = conta.getMovimentos();
@@ -81,5 +86,6 @@ public class Programa2 {
             Movimento movimento = movimentos.get(i);
             System.out.printf("Movimento de %s no valor de R$ %,.2f referente a %s \n", movimento.getTipo(), movimento.getValor(), movimento.getDescricao());
         }
+        System.out.printf("Saldo atual em conta corrente é de R$ %,.2f \n", conta.getSaldo());
     }
 }
